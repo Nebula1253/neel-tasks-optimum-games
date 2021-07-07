@@ -803,6 +803,7 @@ MonoBehaviour:
   speed: 0.008333334
   speedIncrease: 0.0020833334
   distance: 8.11
+  success: {r: 0.17898822, g: 1, b: 0, a: 0}
 --- !u!61 &1314940245
 BoxCollider2D:
   m_ObjectHideFlags: 0

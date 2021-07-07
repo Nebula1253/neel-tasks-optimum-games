@@ -17,6 +17,9 @@ public class BallB : MonoBehaviour
     public Text scoreDisplay;
     public int score = 0;
 
+    public ContainerA containerScript;
+    private IEnumerator colorChange;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +62,9 @@ public class BallB : MonoBehaviour
         if (transform.position.y <= -5)
         {
             lives--;
+            colorChange = containerScript.colorChangeRoutine(Color.red);
+            StartCoroutine(colorChange);
+
             if (lives > 0)
             {
                 resetPosition();

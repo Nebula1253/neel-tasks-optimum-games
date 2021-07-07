@@ -9,10 +9,13 @@ public class ContainerA : MonoBehaviour
     public float distance;
     private int direction = 1;
 
+    private SpriteRenderer rend;
+    private IEnumerator colorChange;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        rend = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -28,5 +31,14 @@ public class ContainerA : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (speed <= 0.025) { speed += speedIncrease; }
+        colorChange = colorChangeRoutine(Color.green);
+        StartCoroutine(colorChange);
+    }
+
+    public IEnumerator colorChangeRoutine(Color colorToChangeTo)
+    {
+        rend.color = colorToChangeTo;
+        yield return new WaitForSeconds(0.5f);
+        rend.color = Color.white;
     }
 }
