@@ -26,6 +26,6 @@ public class ContainerA : MonoBehaviour
     // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (speed == 0.025) { speed += speedIncrease; }
+        if (speed <= 0.025) { speed += speedIncrease; }
     }
 }
