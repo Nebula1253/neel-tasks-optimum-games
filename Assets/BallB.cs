@@ -14,6 +14,9 @@ public class BallB : MonoBehaviour
     public Text gameOverText;
     public Button restartButton;
 
+    public Text scoreDisplay;
+    public int score = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,7 @@ public class BallB : MonoBehaviour
     void Update()
     {
         livesDisplay.text = "Lives: " + lives;
+        scoreDisplay.text = "Score: " + score;
 
         // shoots ball downward when the left mouse button is clicked
         if (Input.GetMouseButtonDown(0)){
@@ -38,6 +42,8 @@ public class BallB : MonoBehaviour
     // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        score++;
+        if ((score % 5) == 0) { lives++; }
         resetPosition();
     }
 
@@ -60,7 +66,6 @@ public class BallB : MonoBehaviour
             else
             {
                 livesDisplay.gameObject.SetActive(false);
-
                 gameOverText.gameObject.SetActive(true);
                 restartButton.gameObject.SetActive(true);
             }

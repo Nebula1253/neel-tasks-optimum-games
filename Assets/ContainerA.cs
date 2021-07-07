@@ -6,6 +6,7 @@ public class ContainerA : MonoBehaviour
 {
     public float speed;
     public float speedIncrease = (float)1 / 480;
+    public float distance;
     private int direction = 1;
 
     // Start is called before the first frame update
@@ -20,7 +21,7 @@ public class ContainerA : MonoBehaviour
         gameObject.transform.position = new Vector2(transform.position.x + (speed * direction), transform.position.y);
 
         // responsible for direction reversal
-        if (transform.position.x >= 10.5 || transform.position.x <= -10.5) { direction *= -1; }
+        if (transform.position.x >= distance || transform.position.x <= -distance) { direction *= -1; }
     }
 
     // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
