@@ -6,7 +6,7 @@ public class ContainerA : MonoBehaviour
 {
     public float speed;
     public float speedIncrease = (float)1 / 480;
-    private int direction = 1;
+    private Vector2 direction = Vector2.right;
 
     private SpriteRenderer rend;
     private IEnumerator colorChange;
@@ -27,10 +27,11 @@ public class ContainerA : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector2.right * speed * direction * Time.deltaTime);
+        transform.Translate(speed * direction * Time.deltaTime);
 
         // responsible for direction reversal
-        if (transform.position.x >= screenBounds.x - objectWidth || transform.position.x <= -screenBounds.x + objectWidth) { direction *= -1; }
+        if (transform.position.x >= screenBounds.x - objectWidth) { direction = Vector2.left; }
+        else if (transform.position.x <= -screenBounds.x + objectWidth) { direction = Vector2.right; }
     }
 
     // not much point checking WHAT the object is colliding with since there's only one other thing in the scene

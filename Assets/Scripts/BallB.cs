@@ -11,25 +11,33 @@ public class BallB : MonoBehaviour
     // used to reset the ball's position
     private Vector2 startPos = new Vector2(0, 4);
     
+    // player life count + UI element
     public Text livesDisplay;
     public int lives;
 
+    // UI elements for game over
     public Text gameOverText;
     public Button restartButton;
 
+    // player score + UI element
     public Text scoreDisplay;
     public int score;
 
+    // so that the container turns red when the ball misses
     public ContainerA containerScript;
     private IEnumerator colorChange;
 
+    // for horizontal movement past score 5
     public float horizontalSpeed;
     private float tempSpeed;
-    private int direction = 1;
+    private Vector2 direction = Vector2.left;
 
+    // for dynamic movement boundaries
     private SpriteRenderer rend;
     private Vector2 screenBounds;
     private float objectWidth;
+
+    public ObstacleInstantiator obstacle;
 
     // Start is called before the first frame update
     void Start()
@@ -50,16 +58,20 @@ public class BallB : MonoBehaviour
         scoreDisplay.text = "Score: " + score;
 
         // shoots ball downward when the left mouse button is clicked
-        if (Input.GetMouseButtonDown(0)){
-            tempSpeed = horizontalSpeed;
-            horizontalSpeed = 0;
-            body.velocity = new Vector2(0, -10);
+        if (body.velocity == new Vector2(0,0)) {
+            if (Input.GetMouseButtonDown(0)) {
+                tempSpeed = horizontalSpeed;
+                horizontalSpeed = 0;
+                body.velocity = new Vector2(0, -10);
+            }
         }
 
         if (score > 5) {
-            transform.Translate(Vector2.left * horizontalSpeed * direction * Time.deltaTime);
+            transform.Translate(horizontalSpeed * direction * Time.deltaTime);
+
             // responsible for direction reversal
-            if (transform.position.x >= screenBounds.x - objectWidth || transform.position.x <= -screenBounds.x + objectWidth) { direction *= -1; }
+            if (transform.position.x >= screenBounds.x - objectWidth) { direction = Vector2.left; }
+            else if (transform.position.x <= -screenBounds.x + objectWidth) { direction = Vector2.right; }
         }
 
         damage();
@@ -75,14 +87,16 @@ public class BallB : MonoBehaviour
         // if horizontal movement has been enabled, the ball speed needs to increase with each round
         if (score > 5) { tempSpeed++; }
 
+        if (score > 10 && score <= 15) { obstacle.CreateObstacle(screenBounds.x, -screenBounds.x); }
+
         resetPosition();
     }
 
     void resetPosition()
     {
-        body.velocity = new Vector2(0, 0);
         horizontalSpeed = tempSpeed;
         transform.position = startPos;
+        body.velocity = new Vector2(0, 0);
     }
     void damage()
     {
