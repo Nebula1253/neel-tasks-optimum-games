@@ -27,7 +27,7 @@ public class ContainerA : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position = new Vector2(transform.position.x + (speed * direction * Time.deltaTime), transform.position.y);
+        transform.Translate(Vector2.right * speed * direction * Time.deltaTime);
 
         // responsible for direction reversal
         if (transform.position.x >= screenBounds.x - objectWidth || transform.position.x <= -screenBounds.x + objectWidth) { direction *= -1; }
