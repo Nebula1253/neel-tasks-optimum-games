@@ -55,13 +55,13 @@ public class BallB : MonoBehaviour
         body.velocity = new Vector2(0, 0);
         transform.position = startPos;
     }
-
     void damage()
     {
         // resets position if the ball goes straight past the container and deducts a life
         if (transform.position.y <= -5)
         {
             lives--;
+            // turns the container red for visual feedback
             colorChange = containerScript.colorChangeRoutine(Color.red);
             StartCoroutine(colorChange);
 
@@ -71,9 +71,16 @@ public class BallB : MonoBehaviour
             }
             else
             {
+                // disables the lives and score display
                 livesDisplay.gameObject.SetActive(false);
+                scoreDisplay.gameObject.SetActive(false);
+
+                // enables the game over text and restart button
                 gameOverText.gameObject.SetActive(true);
                 restartButton.gameObject.SetActive(true);
+
+                // destroys the ball object to save memory
+                Destroy(this);
             }
         }
     }
