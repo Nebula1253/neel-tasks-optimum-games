@@ -83,28 +83,33 @@ public class BallB : MonoBehaviour
 
         if (horizontalSpeed == speedLimit) { horizontalSpeed = initialSpeed; }
 
-        damage();
+        if (transform.position.y < -screenBounds.y) { damage(); }
     }
 
-    // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
     private void OnTriggerEnter2D(Collider2D other)
     {
-        level++;
-        tempSpeed += speedIncrease;
+        if (other.tag != "obstacle")
+        {
+            level++;
+            tempSpeed += speedIncrease;
 
-        // every 5 points the player is given 1 extra life
-        if ((level % 5) == 0) { lives++; }
+            // every 5 points the player is given 1 extra life
+            if ((level % 5) == 0) { lives++; }
 
-        // if horizontal movement has been enabled, the ball speed needs to increase with each round
-        if (level > 5) {
-            direction = containerScript.direction * -1;
+            // if horizontal movement has been enabled, the ball speed needs to increase with each round
+            if (level > 5)
+            {
+                direction = containerScript.direction * -1;
+            }
+
+            if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
+
+            containerScript.onBallHit();
+
+            resetPosition();
         }
-
-        if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
-
-        containerScript.onBallHit();
-
-        resetPosition();
+        else { damage(); }
+        
     }
 
     void resetPosition()
@@ -116,27 +121,25 @@ public class BallB : MonoBehaviour
     void damage()
     {
         // resets position if the ball goes straight past the container and deducts a life
-        if (transform.position.y <= -5) {
-            lives--;
-            // turns the container red for visual feedback
-            colorChange = containerScript.colorChangeRoutine(Color.red);
-            StartCoroutine(colorChange);
+        lives--;
+        // turns the container red for visual feedback
+        colorChange = containerScript.colorChangeRoutine(Color.red);
+        StartCoroutine(colorChange);
 
-            if (lives > 0) {
-                resetPosition();
-            }
-            else {
-                // disables the lives and score display
-                livesDisplay.gameObject.SetActive(false);
-                levelDisplay.gameObject.SetActive(false);
+        if (lives > 0) {
+            resetPosition();
+        }
+        else {
+            // disables the lives and score display
+            livesDisplay.gameObject.SetActive(false);
+            levelDisplay.gameObject.SetActive(false);
 
-                // enables the game over text and restart button
-                gameOverText.gameObject.SetActive(true);
-                restartButton.gameObject.SetActive(true);
+            // enables the game over text and restart button
+            gameOverText.gameObject.SetActive(true);
+            restartButton.gameObject.SetActive(true);
 
-                // destroys the ball object to save memory
-                Destroy(this);
-            }
+            // destroys the ball object to save memory
+            Destroy(this);
         }
     }
 }
