@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ContainerA : MonoBehaviour
 {
-    public float speed;
-    public float speedIncrease = (float)1 / 480;
+    public float speed, speedLimit, speedIncrease;
     private Vector2 direction = Vector2.right;
 
     private SpriteRenderer rend;
@@ -34,10 +33,9 @@ public class ContainerA : MonoBehaviour
         else if (transform.position.x <= -screenBounds.x + objectWidth) { direction = Vector2.right; }
     }
 
-    // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void onBallHit()
     {
-        if (speed <= 10) { speed += speedIncrease; }
+        if (speed < speedLimit) { speed += speedIncrease; }
         colorChange = colorChangeRoutine(Color.green);
         StartCoroutine(colorChange);
     }

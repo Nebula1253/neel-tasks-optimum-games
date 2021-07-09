@@ -311,7 +311,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352473772}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -336,15 +336,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360e7dc6d389ed94caac41947ace7806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 352473776}
   livesDisplay: {fileID: 338845407}
-  lives: 5
+  lives: 999
   gameOverText: {fileID: 1909557891}
   restartButton: {fileID: 721596734}
   scoreDisplay: {fileID: 1179738716}
   score: 0
   containerScript: {fileID: 1314940244}
   horizontalSpeed: 5
+  speedIncrease: 0.5
   obstacle: {fileID: 968341547}
 --- !u!1 &519420028
 GameObject:
@@ -848,6 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  speedLimit: 7.5
   speedIncrease: 0.5
 --- !u!61 &1314940245
 BoxCollider2D:
@@ -859,7 +860,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.5501361}

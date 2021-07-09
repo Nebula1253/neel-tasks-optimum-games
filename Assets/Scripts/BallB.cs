@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class BallB : MonoBehaviour
 {
-    // governs the collision behaviour, as well as the ball's velocity
-    public Rigidbody2D body;
-
     // used to reset the ball's position
     private Vector2 startPos = new Vector2(0, 4);
     
@@ -23,12 +20,13 @@ public class BallB : MonoBehaviour
     public Text scoreDisplay;
     public int score;
 
-    // so that the container turns red when the ball misses
     public ContainerA containerScript;
+
+    // so that the container turns red when the ball misses
     private IEnumerator colorChange;
 
     // for horizontal movement past score 5
-    public float horizontalSpeed;
+    public float horizontalSpeed, speedIncrease;
     private float tempSpeed;
     private Vector2 direction = Vector2.left;
 
@@ -37,12 +35,17 @@ public class BallB : MonoBehaviour
     private Vector2 screenBounds;
     private float objectWidth;
 
+    // for downward velocity
+    private Rigidbody2D body;
+
     public ObstacleInstantiator obstacle;
 
     // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
+        body = GetComponent<Rigidbody2D>();
+
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         objectWidth = rend.bounds.size.x / 2;
 
@@ -58,8 +61,10 @@ public class BallB : MonoBehaviour
         scoreDisplay.text = "Score: " + score;
 
         // shoots ball downward when the left mouse button is clicked
-        if (body.velocity == new Vector2(0,0)) {
-            if (Input.GetMouseButtonDown(0)) {
+        if (body.velocity == new Vector2(0,0))
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
                 tempSpeed = horizontalSpeed;
                 horizontalSpeed = 0;
                 body.velocity = new Vector2(0, -10);
@@ -78,16 +83,18 @@ public class BallB : MonoBehaviour
     }
 
     // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         score++;
         // every 5 points the player is given 1 extra life
         if ((score % 5) == 0) { lives++; }
 
         // if horizontal movement has been enabled, the ball speed needs to increase with each round
-        if (score > 5) { tempSpeed++; }
+        if (score > 5 && score <= 10) { tempSpeed += speedIncrease; }
 
         if (score > 10 && score <= 15) { obstacle.CreateObstacle(screenBounds.x, -screenBounds.x); }
+
+        containerScript.onBallHit();
 
         resetPosition();
     }
@@ -96,7 +103,7 @@ public class BallB : MonoBehaviour
     {
         horizontalSpeed = tempSpeed;
         transform.position = startPos;
-        body.velocity = new Vector2(0, 0);
+        body.velocity = new Vector2(0,0);
     }
     void damage()
     {
