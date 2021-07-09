@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ContainerA : MonoBehaviour
 {
-    public float speed, speedLimit, speedIncrease;
-    private Vector2 direction = Vector2.right;
+    public float speed, speedLimit, speedIncrease; 
+    private float initialSpeed;
+    public Vector2 direction = Vector2.right;
 
     private SpriteRenderer rend;
     private IEnumerator colorChange;
@@ -16,6 +17,7 @@ public class ContainerA : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        initialSpeed = speed;
         rend = GetComponent<SpriteRenderer>();
 
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
@@ -36,6 +38,7 @@ public class ContainerA : MonoBehaviour
     public void onBallHit()
     {
         if (speed < speedLimit) { speed += speedIncrease; }
+        if (speed == speedLimit) { speed = initialSpeed; }
         colorChange = colorChangeRoutine(Color.green);
         StartCoroutine(colorChange);
     }

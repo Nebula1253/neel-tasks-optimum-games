@@ -17,8 +17,8 @@ public class BallB : MonoBehaviour
     public Button restartButton;
 
     // player score + UI element
-    public Text scoreDisplay;
-    public int score;
+    public Text levelDisplay;
+    public int level;
 
     public ContainerA containerScript;
 
@@ -26,9 +26,9 @@ public class BallB : MonoBehaviour
     private IEnumerator colorChange;
 
     // for horizontal movement past score 5
-    public float horizontalSpeed, speedIncrease;
-    private float tempSpeed;
-    private Vector2 direction = Vector2.left;
+    public float horizontalSpeed, speedIncrease, speedLimit;
+    private float tempSpeed, initialSpeed;
+    private Vector2 direction;
 
     // for dynamic movement boundaries
     private SpriteRenderer rend;
@@ -46,6 +46,8 @@ public class BallB : MonoBehaviour
         rend = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
 
+        initialSpeed = horizontalSpeed;
+
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         objectWidth = rend.bounds.size.x / 2;
 
@@ -58,7 +60,7 @@ public class BallB : MonoBehaviour
     void Update()
     {
         livesDisplay.text = "Lives: " + lives;
-        scoreDisplay.text = "Score: " + score;
+        levelDisplay.text = "Level: " + level;
 
         // shoots ball downward when the left mouse button is clicked
         if (body.velocity == new Vector2(0,0))
@@ -71,7 +73,7 @@ public class BallB : MonoBehaviour
             }
         }
 
-        if (score > 5) {
+        if (level > 5) {
             transform.Translate(horizontalSpeed * direction * Time.deltaTime);
 
             // responsible for direction reversal
@@ -79,20 +81,26 @@ public class BallB : MonoBehaviour
             else if (transform.position.x <= -screenBounds.x + objectWidth) { direction = Vector2.right; }
         }
 
+        if (horizontalSpeed == speedLimit) { horizontalSpeed = initialSpeed; }
+
         damage();
     }
 
     // not much point checking WHAT the object is colliding with since there's only one other thing in the scene
     private void OnTriggerEnter2D(Collider2D other)
     {
-        score++;
+        level++;
+        tempSpeed += speedIncrease;
+
         // every 5 points the player is given 1 extra life
-        if ((score % 5) == 0) { lives++; }
+        if ((level % 5) == 0) { lives++; }
 
         // if horizontal movement has been enabled, the ball speed needs to increase with each round
-        if (score > 5 && score <= 10) { tempSpeed += speedIncrease; }
+        if (level > 5) {
+            direction = containerScript.direction * -1;
+        }
 
-        if (score > 10 && score <= 15) { obstacle.CreateObstacle(screenBounds.x, -screenBounds.x); }
+        if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
 
         containerScript.onBallHit();
 
@@ -120,7 +128,7 @@ public class BallB : MonoBehaviour
             else {
                 // disables the lives and score display
                 livesDisplay.gameObject.SetActive(false);
-                scoreDisplay.gameObject.SetActive(false);
+                levelDisplay.gameObject.SetActive(false);
 
                 // enables the game over text and restart button
                 gameOverText.gameObject.SetActive(true);
