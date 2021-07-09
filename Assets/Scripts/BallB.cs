@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BallB : MonoBehaviour
 {
     // used to reset the ball's position
-    private Vector2 startPos = new Vector2(0, 4);
+    private Vector2 startPos;
     
     // player life count + UI element
     public Text livesDisplay;
@@ -43,6 +43,8 @@ public class BallB : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startPos = transform.position;
+
         rend = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
 
@@ -122,24 +124,31 @@ public class BallB : MonoBehaviour
     {
         // resets position if the ball goes straight past the container and deducts a life
         lives--;
-        // turns the container red for visual feedback
-        colorChange = containerScript.colorChangeRoutine(Color.red);
-        StartCoroutine(colorChange);
 
         if (lives > 0) {
             resetPosition();
+            // turns the container red for visual feedback
+            colorChange = containerScript.colorChangeRoutine(Color.red);
+            StartCoroutine(colorChange);
         }
         else {
             // disables the lives and score display
             livesDisplay.gameObject.SetActive(false);
             levelDisplay.gameObject.SetActive(false);
 
+            // destroys the container object
+            containerScript.gameOverDestroy();
+
+            // destroys any obstacles
+            GameObject[] allObjects = GameObject.FindGameObjectsWithTag("obstacle");
+            foreach(GameObject obj in allObjects) { Destroy(obj); }
+
             // enables the game over text and restart button
             gameOverText.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
 
-            // destroys the ball object to save memory
-            Destroy(this);
+            // destroys the ball object
+            Destroy(gameObject);
         }
     }
 }

@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   livesDisplay: {fileID: 338845407}
-  lives: 999
+  lives: 5
   gameOverText: {fileID: 1909557891}
   restartButton: {fileID: 721596734}
   levelDisplay: {fileID: 1179738716}

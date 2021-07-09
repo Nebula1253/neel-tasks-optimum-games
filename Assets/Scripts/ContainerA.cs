@@ -14,9 +14,13 @@ public class ContainerA : MonoBehaviour
     private Vector2 screenBounds;
     private float objectWidth;
 
+    private Vector2 startPos;
+
     // Start is called before the first frame update
     void Start()
     {
+        startPos = transform.position;
+
         initialSpeed = speed;
         rend = GetComponent<SpriteRenderer>();
 
@@ -49,5 +53,10 @@ public class ContainerA : MonoBehaviour
         rend.color = colorToChangeTo;
         yield return new WaitForSeconds(0.5f);
         rend.color = Color.white;
+    }
+
+    public void gameOverDestroy()
+    {
+        Destroy(gameObject);
     }
 }
