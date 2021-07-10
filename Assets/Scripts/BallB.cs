@@ -106,6 +106,14 @@ public class BallB : MonoBehaviour
 
             if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
 
+            if (level > 15 && level <= 20)
+            {
+                foreach (MovingObstacle obstacle in FindObjectsOfType(typeof(MovingObstacle)))
+                {
+                    obstacle.startMoving();
+                }
+            }
+
             containerScript.onBallHit();
 
             resetPosition();

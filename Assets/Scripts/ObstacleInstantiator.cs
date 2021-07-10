@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ObstacleInstantiator : MonoBehaviour
 {
-    public GameObject obstacle;
+    public GameObject staticObstacle;
+    public GameObject movingObstacle;
 
     private Vector2 screenBounds;
     private SpriteRenderer rend;
@@ -16,7 +17,7 @@ public class ObstacleInstantiator : MonoBehaviour
     void Start()
     {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        rend = obstacle.GetComponent<SpriteRenderer>();
+        rend = staticObstacle.GetComponent<SpriteRenderer>();
         screenBorder = screenBounds.x - (rend.bounds.size.x / 2);
 
         // populate spawn positions array
@@ -35,7 +36,8 @@ public class ObstacleInstantiator : MonoBehaviour
 
     public void CreateObstacle()
     {
-        Instantiate(obstacle, new Vector2(spawnPositions[currentIndex],0), Quaternion.identity);
+        if (currentIndex <= 2) { Instantiate(staticObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
+        else { Instantiate(movingObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
         currentIndex++;
     }
 }
