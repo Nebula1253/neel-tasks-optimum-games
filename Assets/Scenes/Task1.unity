@@ -200,8 +200,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -21}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 41.15161, y: -15.336426}
+  m_SizeDelta: {x: 62.3033, y: 18.6728}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &338845407
 MonoBehaviour:
@@ -379,12 +379,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360e7dc6d389ed94caac41947ace7806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lives: 5
+  level: 1
   livesDisplay: {fileID: 338845407}
-  lives: 999
+  levelDisplay: {fileID: 1179738716}
   gameOverText: {fileID: 1909557891}
   restartButton: {fileID: 721596734}
-  levelDisplay: {fileID: 1179738716}
-  level: 1
+  pauseButton: {fileID: 725129723}
   containerScript: {fileID: 1314940244}
   horizontalSpeed: 5
   speedIncrease: 0.5
@@ -618,6 +619,7 @@ GameObject:
   - component: {fileID: 725129725}
   - component: {fileID: 725129724}
   - component: {fileID: 725129723}
+  - component: {fileID: 725129726}
   m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
@@ -738,6 +740,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725129721}
   m_CullTransparentMesh: 1
+--- !u!114 &725129726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725129721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc27f81c19e4324eb5d61fcd799b8eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointerEntered: 0
 --- !u!1 &968341546
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,8 +898,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -90.29999, y: -21.099976}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -40.06021, y: -14.6051}
+  m_SizeDelta: {x: 59.5205, y: 17.0103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1179738716
 MonoBehaviour:

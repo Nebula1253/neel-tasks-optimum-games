@@ -1,36 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BallB : MonoBehaviour
 {
     // used to reset the ball's position
     private Vector2 startPos;
-    
-    // player life count + UI element
-    public Text livesDisplay;
+
+    // object properties
     public int lives;
-
-    // UI elements for game over
-    public Text gameOverText;
-    public Button restartButton;
-
-    // player score + UI element
-    public Text levelDisplay;
     public int level;
 
-    public ContainerA containerScript;
+    // UI elements
+    public Text livesDisplay;
+    public Text levelDisplay;
+    public Text gameOverText;
+    public Button restartButton;
+    public Button pauseButton;
 
-    // so that the container turns red when the ball misses
+    // for container colour change
+    public ContainerA containerScript;
     private IEnumerator colorChange;
 
-    // for horizontal movement past score 5
+    // for ball horizontal movement
     public float horizontalSpeed, speedIncrease, speedLimit;
     private float tempSpeed, initialSpeed;
     private Vector2 direction;
 
-    // for dynamic movement boundaries
+    // for border collision
     private SpriteRenderer rend;
     private Vector2 screenBounds;
     private float objectWidth;
@@ -38,6 +37,7 @@ public class BallB : MonoBehaviour
     // for downward velocity
     private Rigidbody2D body;
 
+    // generates obstacles
     public ObstacleInstantiator obstacle;
 
     // Start is called before the first frame update
@@ -65,14 +65,12 @@ public class BallB : MonoBehaviour
         levelDisplay.text = "Level: " + level;
 
         // shoots ball downward when the left mouse button is clicked
-        if (body.velocity == new Vector2(0,0))
+
+        if (Input.GetMouseButtonDown(0) && body.velocity == new Vector2(0, 0) && !pauseButton.GetComponent<PauseButtonPointerCheck>().pointerEntered)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                tempSpeed = horizontalSpeed;
-                horizontalSpeed = 0;
-                body.velocity = new Vector2(0, -10);
-            }
+            tempSpeed = horizontalSpeed;
+            horizontalSpeed = 0;
+            body.velocity = new Vector2(0, -10);
         }
 
         if (level > 5) {
@@ -96,7 +94,7 @@ public class BallB : MonoBehaviour
             tempSpeed += speedIncrease;
 
             // every 5 points the player is given 1 extra life
-            if ((level % 5) == 0) { lives++; }
+            if (((level - 1) % 5) == 0) { lives++; }
 
             // if horizontal movement has been enabled, the ball speed needs to increase with each round
             if (level > 5)
@@ -140,9 +138,10 @@ public class BallB : MonoBehaviour
             StartCoroutine(colorChange);
         }
         else {
-            // disables the lives and score display
+            // disables the lives and score display, as well as the pause button
             livesDisplay.gameObject.SetActive(false);
             levelDisplay.gameObject.SetActive(false);
+            pauseButton.gameObject.SetActive(false);
 
             // destroys the container object
             containerScript.gameOverDestroy();
