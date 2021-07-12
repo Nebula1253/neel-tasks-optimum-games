@@ -66,11 +66,13 @@ public class BallB : MonoBehaviour
 
         // shoots ball downward when the left mouse button is clicked
 
-        if (Input.GetMouseButtonDown(0) && body.velocity == new Vector2(0, 0) && !pauseButton.GetComponent<PauseButtonPointerCheck>().pointerEntered)
+        if (Input.GetMouseButtonDown(0) && body.velocity == new Vector2(0, 0) 
+            && !pauseButton.GetComponent<PauseButtonPointerCheck>().pointerEntered 
+            && Time.timeScale != 0)
         {
             tempSpeed = horizontalSpeed;
             horizontalSpeed = 0;
-            body.velocity = new Vector2(0, -10);
+            body.velocity = new Vector2(0, -10);   
         }
 
         if (level > 5) {
