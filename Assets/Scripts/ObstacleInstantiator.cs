@@ -28,16 +28,19 @@ public class ObstacleInstantiator : MonoBehaviour
         spawnPositions[4] = screenBorder / -2;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void CreateObstacle()
     {
         if (currentIndex <= 2) { Instantiate(staticObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
         else { Instantiate(movingObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
         currentIndex++;
+    }
+
+    public void CreateAllObstacles()
+    {
+        for(int currentIndex = 0; currentIndex <= 4; currentIndex++)
+        {
+            if (currentIndex <= 2) { Instantiate(staticObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
+            else { Instantiate(movingObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
+        }
     }
 }

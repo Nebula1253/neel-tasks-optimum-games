@@ -17,7 +17,7 @@ public class MovingObstacle : MonoBehaviour
     {
         if (Random.value > 0.5f) { direction = Vector2.right; }
         else { direction = Vector2.left; }
-        speed = 0;
+
         initSpeed = setSpeed;
         speedLimit = setSpeed + 2.5f;
 

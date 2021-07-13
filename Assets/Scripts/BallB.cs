@@ -16,9 +16,10 @@ public class BallB : MonoBehaviour
     // UI elements
     public Text livesDisplay;
     public Text levelDisplay;
-    public Text gameOverText;
+    public Text centralDisplay;
     public Button restartButton;
     public Button pauseButton;
+    public ScrollRect levelSelect;
 
     // for container colour change
     public GameObject container;
@@ -56,11 +57,8 @@ public class BallB : MonoBehaviour
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         objectWidth = rend.bounds.size.x / 2;
 
-        // to hide the game over interface when the game is actually going
-        gameOverText.gameObject.SetActive(false);
+        centralDisplay.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
-
-        LevelSpecificObstacles();
     }
 
     // Update is called once per frame
@@ -93,6 +91,19 @@ public class BallB : MonoBehaviour
         if (transform.position.y < -screenBounds.y) { damage(); }
     }
 
+    public void StartGame()
+    {
+        // to hide the level select + game over interface when the game is actually going
+        levelSelect.gameObject.SetActive(false);
+
+        // enable all the things that were invisible with the level select
+        levelDisplay.gameObject.SetActive(true);
+        livesDisplay.gameObject.SetActive(true);
+        pauseButton.gameObject.SetActive(true);
+        container.SetActive(true);
+
+        LevelSpecificObstacles();
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag != "obstacle")
@@ -108,9 +119,34 @@ public class BallB : MonoBehaviour
             containerScript.onBallHit();
 
             resetPosition();
+
+            if (level > 20) { GameOver(); }
         }
         else { damage(); }
         
+    }
+
+    private void GameOver()
+    {
+        // disables the lives and score display, as well as the pause button
+        livesDisplay.gameObject.SetActive(false);
+        levelDisplay.gameObject.SetActive(false);
+        pauseButton.gameObject.SetActive(false);
+
+        // destroys the container object
+        containerScript.gameOverDestroy();
+
+        // destroys any obstacles
+        GameObject[] allObjects = GameObject.FindGameObjectsWithTag("obstacle");
+        foreach (GameObject obj in allObjects) { Destroy(obj); }
+
+        // enables the game over text and restart button
+        if (lives != 0) { centralDisplay.text = "CONGRATULATIONS! YOU WON!"; }
+        centralDisplay.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+
+        // destroys the ball object
+        Destroy(gameObject);
     }
 
     private void LevelSpecificObstacles()
@@ -125,10 +161,7 @@ public class BallB : MonoBehaviour
 
         if (level > 15 && level <= 20)
         {
-            foreach (MovingObstacle obstacle in FindObjectsOfType(typeof(MovingObstacle)))
-            {
-                obstacle.startMoving();
-            }
+            foreach (MovingObstacle obstacle in FindObjectsOfType(typeof(MovingObstacle))) { obstacle.startMoving(); }
         }
     }
 
@@ -150,24 +183,7 @@ public class BallB : MonoBehaviour
             StartCoroutine(colorChange);
         }
         else {
-            // disables the lives and score display, as well as the pause button
-            livesDisplay.gameObject.SetActive(false);
-            levelDisplay.gameObject.SetActive(false);
-            pauseButton.gameObject.SetActive(false);
-
-            // destroys the container object
-            containerScript.gameOverDestroy();
-
-            // destroys any obstacles
-            GameObject[] allObjects = GameObject.FindGameObjectsWithTag("obstacle");
-            foreach(GameObject obj in allObjects) { Destroy(obj); }
-
-            // enables the game over text and restart button
-            gameOverText.gameObject.SetActive(true);
-            restartButton.gameObject.SetActive(true);
-
-            // destroys the ball object
-            Destroy(gameObject);
+            GameOver();
         }
     }
 }
