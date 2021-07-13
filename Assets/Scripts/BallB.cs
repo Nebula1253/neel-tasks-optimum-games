@@ -21,7 +21,8 @@ public class BallB : MonoBehaviour
     public Button pauseButton;
 
     // for container colour change
-    public ContainerA containerScript;
+    public GameObject container;
+    private ContainerA containerScript;
     private IEnumerator colorChange;
 
     // for ball horizontal movement
@@ -43,6 +44,8 @@ public class BallB : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        containerScript = container.GetComponent<ContainerA>();
+
         startPos = transform.position;
 
         rend = GetComponent<SpriteRenderer>();
@@ -56,6 +59,8 @@ public class BallB : MonoBehaviour
         // to hide the game over interface when the game is actually going
         gameOverText.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
+
+        LevelSpecificObstacles();
     }
 
     // Update is called once per frame
@@ -98,21 +103,7 @@ public class BallB : MonoBehaviour
             // every 5 points the player is given 1 extra life
             if (((level - 1) % 5) == 0) { lives++; }
 
-            // if horizontal movement has been enabled, the ball speed needs to increase with each round
-            if (level > 5)
-            {
-                direction = containerScript.direction * -1;
-            }
-
-            if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
-
-            if (level > 15 && level <= 20)
-            {
-                foreach (MovingObstacle obstacle in FindObjectsOfType(typeof(MovingObstacle)))
-                {
-                    obstacle.startMoving();
-                }
-            }
+            LevelSpecificObstacles();
 
             containerScript.onBallHit();
 
@@ -120,6 +111,25 @@ public class BallB : MonoBehaviour
         }
         else { damage(); }
         
+    }
+
+    private void LevelSpecificObstacles()
+    {
+        // if horizontal movement has been enabled, the ball speed needs to increase with each round
+        if (level > 5)
+        {
+            direction = containerScript.direction * -1;
+        }
+
+        if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
+
+        if (level > 15 && level <= 20)
+        {
+            foreach (MovingObstacle obstacle in FindObjectsOfType(typeof(MovingObstacle)))
+            {
+                obstacle.startMoving();
+            }
+        }
     }
 
     void resetPosition()
