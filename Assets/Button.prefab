@@ -214,3 +214,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 0}
+  container: {fileID: 0}
+  movingObstacle: {fileID: 81318631689222580, guid: 720b7116daf476c458d51b5cda50be60, type: 3}

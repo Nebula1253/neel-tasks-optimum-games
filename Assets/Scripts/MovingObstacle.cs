@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MovingObstacle : MonoBehaviour
 {
-    public float setSpeed, speedIncrease;
-    private float speed, initSpeed, speedLimit;
+    public float speed, speedIncrease;
+    private float initSpeed, speedLimit;
     private Vector2 direction;
+
+    private bool isMoving;
 
     private Vector2 screenBounds;
     private SpriteRenderer rend;
@@ -18,8 +20,8 @@ public class MovingObstacle : MonoBehaviour
         if (Random.value > 0.5f) { direction = Vector2.right; }
         else { direction = Vector2.left; }
 
-        initSpeed = setSpeed;
-        speedLimit = setSpeed + 2.5f;
+        initSpeed = speed;
+        speedLimit = initSpeed + 2.5f;
 
         rend = GetComponent<SpriteRenderer>();
 
@@ -30,7 +32,7 @@ public class MovingObstacle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(speed * direction * Time.deltaTime);
+        if (isMoving) { transform.Translate(speed * direction * Time.deltaTime); }
 
         // responsible for direction reversal
         if (transform.position.x >= screenBounds.x - objectWidth) { direction = Vector2.left; }
@@ -39,8 +41,8 @@ public class MovingObstacle : MonoBehaviour
 
     public void startMoving()
     {
-        speed = setSpeed;
-        setSpeed += speedIncrease;
+        isMoving = true;
+        speed += speedIncrease;
         if (speed == speedLimit) { speed = initSpeed; }
     }
 }
