@@ -11,7 +11,6 @@ public class ObstacleInstantiator : MonoBehaviour
     private SpriteRenderer rend;
     private float screenBorder;
     private float[] spawnPositions = new float[5];
-    private int currentIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -28,16 +27,18 @@ public class ObstacleInstantiator : MonoBehaviour
         spawnPositions[4] = screenBorder / -2;
     }
 
-    public void CreateObstacle()
+    public void CreateAllObstacles(int levelNumber)
     {
-        if (currentIndex <= 2) { Instantiate(staticObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
-        else { Instantiate(movingObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
-        currentIndex++;
-    }
+        // since this instantiates ALL the obstacles for EVERY INDIVIDUAL LEVEL, the obstacles already in the game need to be destroyed
 
-    public void CreateAllObstacles()
-    {
-        for(int currentIndex = 0; currentIndex <= 4; currentIndex++)
+        foreach(Object obstacle in GameObject.FindGameObjectsWithTag("obstacle"))
+        {
+            Destroy(obstacle);
+        }
+
+        levelNumber -= 11;
+        if (levelNumber > 4) { levelNumber = 4; }
+        for(int currentIndex = 0; currentIndex <= levelNumber; currentIndex++)
         {
             if (currentIndex <= 2) { Instantiate(staticObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }
             else { Instantiate(movingObstacle, new Vector2(spawnPositions[currentIndex], 0), Quaternion.identity); }

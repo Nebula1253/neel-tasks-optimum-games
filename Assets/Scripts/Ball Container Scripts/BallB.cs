@@ -157,7 +157,7 @@ public class BallB : MonoBehaviour
             direction = containerScript.direction * -1;
         }
 
-        if (level > 10 && level <= 15) { obstacle.CreateObstacle(); }
+        if (level > 10 && level <= 15) { obstacle.CreateAllObstacles(level); }
 
         if (level > 15 && level <= 20)
         {

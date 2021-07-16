@@ -21,7 +21,7 @@ public class LevelButtonManager : MonoBehaviour
     void OnClick()
     {
         int levelNumber = int.Parse(btn.GetComponentInChildren<Text>().text.ToString());
-        if (levelNumber > 15) { instantiator.CreateAllObstacles(); }
+        if (levelNumber > 15) { instantiator.CreateAllObstacles(levelNumber); }
 
         ball.SetActive(true);
         ball.GetComponent<BallB>().level = levelNumber;
