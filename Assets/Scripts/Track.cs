@@ -5,25 +5,32 @@ using UnityEngine.EventSystems;
 
 public class Track : MonoBehaviour
 {
-    public float speed, speedLimit;
-    private float initSpeed;
+    public float baseSpeed, maxSpeed, speedDecreaseOnHit;
+    private float speed, speedLimit;
     // Start is called before the first frame update
     void Start()
     {
-        initSpeed = speed;
+        speed = 0;
+        speedLimit = baseSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
+        speed += 0.05f;
         transform.Translate(Vector2.down * Time.deltaTime * speed);
+        if (speed > speedLimit) { speed = speedLimit; }
     }
 
     public void OnAcceleratorButtonDown()
     {
-        speed += 0.05f;
-        if (speed > speedLimit) { speed = speedLimit; }
+        speedLimit = maxSpeed;
     }
 
-    public void OnAcceleratorButtonRelease() { speed = initSpeed; }
+    public void OnAcceleratorButtonRelease() { speedLimit = baseSpeed; }
+
+    public void speedDecrease()
+    {
+        speed -= speedDecreaseOnHit;
+    }
 }
