@@ -6,6 +6,7 @@ TagManager:
   tags:
   - obstacle
   - container
+  - leftBumper
   layers:
   - Default
   - TransparentFX

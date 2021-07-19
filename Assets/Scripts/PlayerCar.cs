@@ -6,8 +6,7 @@ public class PlayerCar : MonoBehaviour
 {
     public float speed;
     public Joystick joystick;
-
-    private float onRoad = 1;
+    private bool onRoad = true;
 
     // Start is called before the first frame update
     void Start()
@@ -18,16 +17,33 @@ public class PlayerCar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // float values only used for movement with keyboard on laptop
         float hDirection = Input.GetAxisRaw("Horizontal");
         float vDirection = Input.GetAxisRaw("Vertical");
 
-        // arrow keys movement for editor testing
-        transform.Translate(Vector2.right * hDirection * Time.deltaTime * speed * onRoad);
+        if (onRoad) { 
+            transform.Translate(Vector2.right * hDirection * Time.deltaTime * speed);
+            transform.Translate(Vector2.right * joystick.Horizontal * Time.deltaTime * speed);
+        }
         transform.Translate(Vector2.up * vDirection * Time.deltaTime * speed);
-
-        // joystick movement for Android
-        transform.Translate(Vector2.right * joystick.Horizontal * Time.deltaTime * speed * onRoad);
         transform.Translate(Vector2.up * joystick.Vertical * Time.deltaTime * speed);
 
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        onRoad = false;
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "leftBumper")
+        {
+            transform.Translate(Vector2.right * Time.deltaTime * speed);
+        }
+        else { transform.Translate(Vector2.left * Time.deltaTime * speed); }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        onRoad = true;
+    }
+}
