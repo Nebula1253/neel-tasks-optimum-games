@@ -25,9 +25,13 @@ public class Track : MonoBehaviour
     public void OnAcceleratorButtonDown()
     {
         speedLimit = maxSpeed;
+        speedDecreaseOnHit = maxSpeed + 5;
     }
 
-    public void OnAcceleratorButtonRelease() { speedLimit = baseSpeed; }
+    public void OnAcceleratorButtonRelease() { 
+        speedLimit = baseSpeed;
+        speedDecreaseOnHit = baseSpeed + 5;
+    }
 
     public void speedDecrease()
     {

@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCar : MonoBehaviour
 {
     public float speed;
     public Joystick joystick;
     private bool onRoad = true;
+    public Text gameOverText;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameOverText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -45,5 +47,12 @@ public class PlayerCar : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         onRoad = true;
+    }
+
+    public void GameOver()
+    {
+        gameOverText.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+        Destroy(gameObject);
     }
 }

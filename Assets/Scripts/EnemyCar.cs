@@ -11,7 +11,7 @@ public class EnemyCar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        road = GameObject.Find("RoadTestTexture");
+        road = GameObject.Find("Track");
         roadHeight = road.GetComponent<SpriteRenderer>().bounds.size.y / 2;
         speed = Random.Range(minSpeed, maxSpeed);
     }
