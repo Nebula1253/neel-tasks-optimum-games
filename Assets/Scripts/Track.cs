@@ -7,6 +7,12 @@ public class Track : MonoBehaviour
 {
     public float baseSpeed, maxSpeed, speedDecreaseOnHit;
     private float speed, speedLimit;
+    private bool decelerate = false;
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -17,9 +23,19 @@ public class Track : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speed += 0.05f;
+        // start decelerating after hitting the finish line
+        if (decelerate)
+        {
+            speed -= 25f * Time.deltaTime;
+            if (speed < 0) { speed = 0; }
+        }
+        else
+        {
+            speed += 10f * Time.deltaTime;
+            if (speed > speedLimit) { speed = speedLimit; }
+        }
+
         transform.Translate(Vector2.down * Time.deltaTime * speed);
-        if (speed > speedLimit) { speed = speedLimit; }
     }
 
     public void OnAcceleratorButtonDown()
@@ -36,5 +52,11 @@ public class Track : MonoBehaviour
     public void speedDecrease()
     {
         speed -= speedDecreaseOnHit;
+    }
+
+    public void stopScrolling()
+    {
+        decelerate = true;
+        speed = baseSpeed;
     }
 }

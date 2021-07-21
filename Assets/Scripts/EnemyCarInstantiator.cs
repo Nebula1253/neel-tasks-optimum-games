@@ -13,7 +13,7 @@ public class EnemyCarInstantiator : MonoBehaviour
         GameObject road = GameObject.Find("Track");
         for (int i = 1; i <= numberOfCars; i++)
         {
-            GameObject x = Instantiate(enemyCar, new Vector3(Random.Range(-4.8f, 4.8f), Random.Range(0f, 50f), 0), Quaternion.identity);
+            GameObject x = Instantiate(enemyCar, new Vector3(Random.Range(-4.8f, 4.8f), Random.Range(0f, 200f), 0), Quaternion.identity);
             x.transform.parent = road.transform;
         }
     }

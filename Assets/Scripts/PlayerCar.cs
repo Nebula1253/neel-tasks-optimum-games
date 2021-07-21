@@ -49,10 +49,19 @@ public class PlayerCar : MonoBehaviour
         onRoad = true;
     }
 
-    public void GameOver()
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Finish Line")
+        {
+            gameOverText.text = "YOU WON!";
+            timeOver();
+        }
+    }
+
+    public void timeOver()
     {
         gameOverText.gameObject.SetActive(true);
-        Time.timeScale = 0f;
-        Destroy(gameObject);
+        GameObject.Find("Timer").GetComponent<Timer>().gameOver = true;
+        GameObject.Find("Track").GetComponent<Track>().stopScrolling();
     }
 }
