@@ -8,6 +8,7 @@ public class PlayerCar : MonoBehaviour
     public float speed;
     public Joystick joystick;
     private bool onRoad = true;
+    private bool raceOver = false;
     public Text gameOverText;
 
     // Start is called before the first frame update
@@ -19,16 +20,20 @@ public class PlayerCar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // float values only used for movement with keyboard on laptop
-        float hDirection = Input.GetAxisRaw("Horizontal");
-        float vDirection = Input.GetAxisRaw("Vertical");
+        if (!raceOver)
+        {
+            // float values only used for movement with keyboard on laptop
+            float hDirection = Input.GetAxisRaw("Horizontal");
+            float vDirection = Input.GetAxisRaw("Vertical");
 
-        if (onRoad) { 
-            transform.Translate(Vector2.right * hDirection * Time.deltaTime * speed);
-            transform.Translate(Vector2.right * joystick.Horizontal * Time.deltaTime * speed);
+            if (onRoad)
+            {
+                transform.Translate(Vector2.right * hDirection * Time.deltaTime * speed);
+                transform.Translate(Vector2.right * joystick.Horizontal * Time.deltaTime * speed);
+            }
+            transform.Translate(Vector2.up * vDirection * Time.deltaTime * speed);
+            transform.Translate(Vector2.up * joystick.Vertical * Time.deltaTime * speed);
         }
-        transform.Translate(Vector2.up * vDirection * Time.deltaTime * speed);
-        transform.Translate(Vector2.up * joystick.Vertical * Time.deltaTime * speed);
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,6 +58,7 @@ public class PlayerCar : MonoBehaviour
     {
         if (collision.gameObject.name == "Finish Line")
         {
+            raceOver = true;
             gameOverText.text = "YOU WON!";
             timeOver();
         }
