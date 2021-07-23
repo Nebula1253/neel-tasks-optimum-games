@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
     public int timeToComplete;
+    private float timeLeft, timeElapsed;
     public bool gameOver = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+        timeLeft = timeToComplete;
     }
 
     // Update is called once per frame
@@ -18,7 +19,8 @@ public class Timer : MonoBehaviour
     {
         if (!gameOver)
         {
-            float timeLeft = timeToComplete - Mathf.Floor(Time.time);
+            timeElapsed += Time.deltaTime;
+            timeLeft = Mathf.Floor(timeToComplete - timeElapsed);
             GetComponent<Text>().text = "Time left: " + timeLeft;
 
             // end game if time has run out
@@ -27,5 +29,11 @@ public class Timer : MonoBehaviour
                 GameObject.Find("PlayerCar").GetComponent<PlayerCar>().timeOver();
             }
         }
+    }
+
+    public void resetTimer()
+    {
+        timeLeft = timeToComplete;
+        timeElapsed = 0;
     }
 }

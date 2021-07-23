@@ -9,12 +9,16 @@ public class PlayerCar : MonoBehaviour
     public Joystick joystick;
     private bool onRoad = true;
     private bool raceOver = false;
+    private Track track;
+    private Timer timer;
     public Text gameOverText;
 
     // Start is called before the first frame update
     void Start()
     {
         gameOverText.gameObject.SetActive(false);
+        track = GameObject.Find("Track").GetComponent<Track>();
+        timer = GameObject.Find("Timer").GetComponent<Timer>();
     }
 
     // Update is called once per frame
@@ -58,16 +62,39 @@ public class PlayerCar : MonoBehaviour
     {
         if (collision.gameObject.name == "Finish Line")
         {
-            raceOver = true;
             gameOverText.text = "YOU WON!";
             timeOver();
+            StartCoroutine("loadLevel");
         }
     }
 
     public void timeOver()
     {
         gameOverText.gameObject.SetActive(true);
-        GameObject.Find("Timer").GetComponent<Timer>().gameOver = true;
-        GameObject.Find("Track").GetComponent<Track>().stopScrolling();
+        timer.gameOver = true;
+        track.stopScrolling();
+        raceOver = true;
+    }
+
+    IEnumerator loadLevel()
+    {
+        yield return new WaitForSeconds(3f);
+
+        // allow player to control car again
+        raceOver = false;
+
+        // put car back at track start
+        track.resetAfterFinish();
+
+        // reset timer
+        timer.gameOver = false;
+        timer.resetTimer();
+
+        // reset and disable text overlay
+        gameOverText.text = "TIME OVER";
+        gameOverText.gameObject.SetActive(false);
+
+        // reset minimap
+        GameObject.Find("Player Indicator").GetComponent<MiniMapPlayerIndicator>().resetPos();
     }
 }

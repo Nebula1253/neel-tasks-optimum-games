@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class Track : MonoBehaviour
 {
     public float baseSpeed, maxSpeed, speedDecreaseOnHit;
+    public float widthScaleDecrease, heightScaleIncrease;
     private float speed, speedLimit;
     private bool decelerate = false;
 
@@ -58,5 +59,13 @@ public class Track : MonoBehaviour
     {
         decelerate = true;
         speed = baseSpeed;
+    }
+
+    public void resetAfterFinish()
+    {
+        transform.localScale += new Vector3(-widthScaleDecrease, +heightScaleIncrease, 0);
+        float newPosY = (GetComponent<SpriteRenderer>().bounds.size.y / 2) - 5;
+        transform.position = new Vector2(0, newPosY);
+        decelerate = false;
     }
 }
