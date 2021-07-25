@@ -7,6 +7,7 @@ public class Track : MonoBehaviour
 {
     public float baseSpeed, maxSpeed, speedDecreaseOnHit;
     public float widthScaleDecrease, heightScaleIncrease;
+    private float widthScale = 1, heightScale = 1;
     private float speed, speedLimit;
     private bool decelerate = false;
 
@@ -52,7 +53,8 @@ public class Track : MonoBehaviour
 
     public void speedDecrease()
     {
-        speed -= speedDecreaseOnHit;
+        if (speed > 0) { speed -= speedDecreaseOnHit; }
+        else { speed -= 5; }
     }
 
     public void stopScrolling()
@@ -63,9 +65,16 @@ public class Track : MonoBehaviour
 
     public void resetAfterFinish()
     {
-        transform.localScale += new Vector3(-widthScaleDecrease, +heightScaleIncrease, 0);
+        widthScale -= widthScaleDecrease;
+        heightScale += heightScaleIncrease;
+        transform.localScale = new Vector3(widthScale, heightScale, 0);
         float newPosY = (GetComponent<SpriteRenderer>().bounds.size.y / 2) - 5;
-        transform.position = new Vector2(0, newPosY);
+        float posX = transform.position.x;
+        transform.position = new Vector2(posX, newPosY);
         decelerate = false;
     }
+
+    public float getWidthScale() { return widthScale; }
+
+    public float getHeightScale() { return heightScale; }
 }

@@ -8,7 +8,6 @@ public class AccelerateButton : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public GameObject track;
     private bool isAccelerating = false;
 
-    // Start is called before the first frame update
     public void OnPointerDown(PointerEventData eventData)
     {
         isAccelerating = true;

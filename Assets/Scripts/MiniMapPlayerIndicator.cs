@@ -40,6 +40,6 @@ public class MiniMapPlayerIndicator : MonoBehaviour
 
     void determineScale()
     {
-        trackToMapScale = trackRend.bounds.size.y / ((miniMapRend.rect.height - GetComponent<RectTransform>().rect.height) * canvas.scaleFactor);
+        trackToMapScale = trackRend.bounds.size.y / ((miniMapRend.rect.height - GetComponent<RectTransform>().rect.height) * canvas.scaleFactor * miniMapRend.localScale.y);
     }
 }

@@ -11,6 +11,7 @@ public class PlayerCar : MonoBehaviour
     private bool raceOver = false;
     private Track track;
     private Timer timer;
+    private EnemyCarInstantiator instantiator;
     public Text gameOverText;
 
     // Start is called before the first frame update
@@ -19,6 +20,7 @@ public class PlayerCar : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         track = GameObject.Find("Track").GetComponent<Track>();
         timer = GameObject.Find("Timer").GetComponent<Timer>();
+        instantiator = GameObject.Find("EnemyInstantiator").GetComponent<EnemyCarInstantiator>();
     }
 
     // Update is called once per frame
@@ -85,6 +87,9 @@ public class PlayerCar : MonoBehaviour
 
         // put car back at track start
         track.resetAfterFinish();
+
+        // destroy all enemies and redo for new level
+        instantiator.instantiateEnemy();
 
         // reset timer
         timer.gameOver = false;
