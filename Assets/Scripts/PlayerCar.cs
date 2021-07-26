@@ -7,16 +7,20 @@ public class PlayerCar : MonoBehaviour
 {
     public float speed;
     public Joystick joystick;
+    public int level;
     private bool onRoad = true;
     private bool raceOver = false;
     private Track track;
     private Timer timer;
     private EnemyCarInstantiator instantiator;
     public Text gameOverText;
+    public Text levelDisplay;
 
     // Start is called before the first frame update
     void Start()
     {
+        level = 1;
+        levelDisplay.text = "LEVEL " + level;
         gameOverText.gameObject.SetActive(false);
         track = GameObject.Find("Track").GetComponent<Track>();
         timer = GameObject.Find("Timer").GetComponent<Timer>();
@@ -82,6 +86,9 @@ public class PlayerCar : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
+        level++;
+        levelDisplay.text = "LEVEL " + level;
+
         // allow player to control car again
         raceOver = false;
 
@@ -89,6 +96,7 @@ public class PlayerCar : MonoBehaviour
         track.resetAfterFinish();
 
         // destroy all enemies and redo for new level
+        instantiator.increaseEnemyCount();
         instantiator.instantiateEnemy();
 
         // reset timer

@@ -65,12 +65,23 @@ public class Track : MonoBehaviour
 
     public void resetAfterFinish()
     {
+        GameObject finishLine = GameObject.Find("Finish Line");
+
+        float initScaleX = finishLine.transform.localScale.x;
+        float initScaleY = finishLine.transform.localScale.y;
+
         widthScale -= widthScaleDecrease;
         heightScale += heightScaleIncrease;
         transform.localScale = new Vector3(widthScale, heightScale, 0);
+
+        // keeps the finish line graphic's proportions constant
+        
+        finishLine.transform.localScale = new Vector3(initScaleX / widthScale, initScaleY / heightScale, 0);
+
         float newPosY = (GetComponent<SpriteRenderer>().bounds.size.y / 2) - 5;
         float posX = transform.position.x;
         transform.position = new Vector2(posX, newPosY);
+
         decelerate = false;
     }
 

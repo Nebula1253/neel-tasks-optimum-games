@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public int timeToComplete;
+    public int timeToComplete, levelTimeIncrease;
     private float timeLeft, timeElapsed;
     public bool gameOver = false;
     // Start is called before the first frame update
@@ -33,7 +33,7 @@ public class Timer : MonoBehaviour
 
     public void resetTimer()
     {
-        timeLeft = timeToComplete;
+        timeToComplete += levelTimeIncrease;
         timeElapsed = 0;
     }
 }

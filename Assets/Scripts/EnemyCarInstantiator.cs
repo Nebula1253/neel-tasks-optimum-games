@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyCarInstantiator : MonoBehaviour
 {
     public GameObject enemyCar;
-    public int numberOfCars;
+    public int numberOfCars, nrCarsIncreaseWithLevel;
 
     // Start is called before the first frame update
     void Start()
@@ -37,4 +37,6 @@ public class EnemyCarInstantiator : MonoBehaviour
             x.transform.parent = road.transform;
         }
     }
+
+    public void increaseEnemyCount() { numberOfCars += nrCarsIncreaseWithLevel; }
 }
