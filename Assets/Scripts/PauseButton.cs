@@ -8,8 +8,9 @@ public class PauseButton : MonoBehaviour
     private Button btn;
     private Image img;
     private bool paused = false;
-    public Text centralDisplay;
     public Sprite pauseButton, playButton;
+    // UI elements to enable / disable
+    public Text centralDisplay;
 
     // Start is called before the first frame update
     void Start()
@@ -26,16 +27,18 @@ public class PauseButton : MonoBehaviour
         {
             Time.timeScale = 0f;
             paused = true;
+            img.sprite = playButton;
+
             centralDisplay.gameObject.SetActive(true);
             centralDisplay.text = "PAUSED";
-            img.sprite = playButton;
         }
         else
         {
             Time.timeScale = 1f;
             paused = false;
-            centralDisplay.gameObject.SetActive(false);
             img.sprite = pauseButton;
+
+            centralDisplay.gameObject.SetActive(false);
         }
     }
 }

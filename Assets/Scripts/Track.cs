@@ -7,19 +7,23 @@ public class Track : MonoBehaviour
 {
     public float baseSpeed, maxSpeed, speedDecreaseOnHit;
     public float widthScaleDecrease, heightScaleIncrease;
-    private float widthScale = 1, heightScale = 1;
+    private float widthScale, heightScale, initWidthScale, initHeightScale;
     private float speed, speedLimit;
     private bool decelerate = false;
 
-    public float GetSpeed()
-    {
-        return speed;
-    }
+    private GameController controller;
+
     // Start is called before the first frame update
     void Start()
     {
+        initWidthScale = transform.localScale.x;
+        initHeightScale = transform.localScale.y;
+
         speed = 0;
         speedLimit = baseSpeed;
+
+        controller = GameObject.Find("GameController").GetComponent<GameController>();
+        trackScale();
     }
 
     // Update is called once per frame
@@ -40,6 +44,10 @@ public class Track : MonoBehaviour
         transform.Translate(Vector2.down * Time.deltaTime * speed);
     }
 
+    public float GetSpeed()
+    {
+        return speed;
+    }
     public void OnAcceleratorButtonDown()
     {
         speedLimit = maxSpeed;
@@ -63,20 +71,20 @@ public class Track : MonoBehaviour
         speed = baseSpeed;
     }
 
-    public void resetAfterFinish()
+    public void trackScale()
     {
         GameObject finishLine = GameObject.Find("Finish Line");
 
-        float initScaleX = finishLine.transform.localScale.x;
-        float initScaleY = finishLine.transform.localScale.y;
+        float finishScaleX = finishLine.transform.localScale.x;
+        float finishScaleY = finishLine.transform.localScale.y;
 
-        widthScale -= widthScaleDecrease;
-        heightScale += heightScaleIncrease;
+        widthScale = initWidthScale - (widthScaleDecrease * (controller.level - 1));
+        heightScale = initHeightScale + (heightScaleIncrease * (controller.level - 1));
         transform.localScale = new Vector3(widthScale, heightScale, 0);
 
         // keeps the finish line graphic's proportions constant
         
-        finishLine.transform.localScale = new Vector3(initScaleX / widthScale, initScaleY / heightScale, 0);
+        finishLine.transform.localScale = new Vector3(finishScaleX / widthScale, finishScaleY / heightScale, 0);
 
         float newPosY = (GetComponent<SpriteRenderer>().bounds.size.y / 2) - 5;
         float posX = transform.position.x;

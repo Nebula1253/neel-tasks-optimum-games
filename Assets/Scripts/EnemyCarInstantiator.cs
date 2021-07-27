@@ -5,11 +5,14 @@ using UnityEngine;
 public class EnemyCarInstantiator : MonoBehaviour
 {
     public GameObject enemyCar;
-    public int numberOfCars, nrCarsIncreaseWithLevel;
+    public int numberOfCars;
+
+    private GameController controller;
 
     // Start is called before the first frame update
     void Start()
     {
+        controller = GameObject.Find("GameController").GetComponent<GameController>();
         instantiateEnemy();
     }
 
@@ -21,6 +24,8 @@ public class EnemyCarInstantiator : MonoBehaviour
 
     public void instantiateEnemy()
     {
+        numberOfCars += (controller.level - 1) * controller.nrEnemiesIncreaseWithLevel;
+
         // destroys any obstacles
         GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("enemy");
         foreach (GameObject obj in allEnemies) { Destroy(obj); }
@@ -37,6 +42,4 @@ public class EnemyCarInstantiator : MonoBehaviour
             x.transform.parent = road.transform;
         }
     }
-
-    public void increaseEnemyCount() { numberOfCars += nrCarsIncreaseWithLevel; }
 }
