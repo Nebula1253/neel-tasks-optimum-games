@@ -9,6 +9,8 @@ public class DriftCar : MonoBehaviour
     public float angularSpeed, upwardSpeed;
     public Joystick joystick;
     private GameObject rotationCenter;
+    private bool onRoad = true;
+    public Vector2 dir = new Vector2(0,0);
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +38,7 @@ public class DriftCar : MonoBehaviour
         {
             upwardSpeed = upwardSpeedLimit;
         }
+        transform.Translate(dir * Time.deltaTime);
     }
 
     public void driftButtonDown() {
@@ -50,6 +53,23 @@ public class DriftCar : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        upwardSpeed = 0;
+        if (onRoad)
+        {
+            upwardSpeed = -5;
+        }
+
+        onRoad = false;
+
+        //upwardSpeed = 0;
+
+        //float force = 25;
+        //dir = transform.position - collision.transform.position;
+        //dir.Normalize();
+        //dir *= force;
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        onRoad = true;
     }
 }
