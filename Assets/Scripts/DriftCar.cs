@@ -10,6 +10,7 @@ public class DriftCar : MonoBehaviour
     public Joystick joystick;
     private GameObject rotationCenter;
     public bool drifting = false;
+    public float test;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,6 @@ public class DriftCar : MonoBehaviour
         if (joystick.Horizontal > 0) { joystickHDirection = 1; }
         else if (joystick.Horizontal < 0) { joystickHDirection = -1; }
 
-        // sharper turning when drifting
         if (!drifting) {
             body.rotation += -hDirection * angularSpeed * Time.deltaTime;
             body.rotation += -joystickHDirection * angularSpeed * Time.deltaTime;
@@ -42,12 +42,13 @@ public class DriftCar : MonoBehaviour
             body.AddForce(body.GetRelativeVector(relativeForce));
         }
 
-        body.AddForce(transform.up * acceleration);
-
         if (body.velocity.magnitude > speedLimit)
         {
             body.velocity = body.velocity.normalized * speedLimit;
-        } 
+        }
+
+        body.AddForce(transform.up * acceleration);
+        test = Mathf.Abs(body.rotation % 90);
     }
 
     public void driftButtonDown() {
@@ -62,6 +63,6 @@ public class DriftCar : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((body.velocity / transform.up).y > 0) { body.velocity = body.velocity.normalized * -6; }
+        body.velocity = body.velocity.normalized * -5;
     }
 }
