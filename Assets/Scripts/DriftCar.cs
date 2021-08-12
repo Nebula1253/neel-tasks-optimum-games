@@ -5,23 +5,21 @@ using UnityEngine;
 public class DriftCar : MonoBehaviour
 {
     private Rigidbody2D body;
-    public float upwardSpeedLimit, baseAngularSpeed, driftAngularSpeed;
-    public float angularSpeed, upwardSpeed;
+    public float speedLimit;
+    public float angularSpeed, speedMagnitude, acceleration;
     public Joystick joystick;
     private GameObject rotationCenter;
-    private bool onRoad = true;
-    public Vector2 dir = new Vector2(0,0);
+    public bool drifting = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        angularSpeed = baseAngularSpeed;
         body = GetComponent<Rigidbody2D>();
         rotationCenter = GameObject.Find("RotationCenter");
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float hDirection = Input.GetAxisRaw("Horizontal");
         float joystickHDirection = 0;
@@ -29,47 +27,41 @@ public class DriftCar : MonoBehaviour
         if (joystick.Horizontal > 0) { joystickHDirection = 1; }
         else if (joystick.Horizontal < 0) { joystickHDirection = -1; }
 
-        transform.RotateAround(rotationCenter.transform.position, Vector3.forward, -hDirection * angularSpeed * Time.deltaTime);
-        transform.RotateAround(rotationCenter.transform.position, Vector3.forward, -joystickHDirection * angularSpeed * Time.deltaTime);
-        
-        body.velocity = transform.up * upwardSpeed;
-        upwardSpeed+= 10f * Time.deltaTime;
-        if (upwardSpeed > upwardSpeedLimit)
-        {
-            upwardSpeed = upwardSpeedLimit;
+        // sharper turning when drifting
+        if (!drifting) {
+            body.rotation += -hDirection * angularSpeed * Time.deltaTime;
+            body.rotation += -joystickHDirection * angularSpeed * Time.deltaTime;
         }
-        transform.Translate(dir * Time.deltaTime);
+        else
+        {
+            body.rotation += -hDirection * angularSpeed * (body.velocity.magnitude / speedLimit) * Time.deltaTime;
+            body.rotation += -joystickHDirection * angularSpeed * (body.velocity.magnitude / speedLimit) * Time.deltaTime;
+
+            float driftForce = Vector2.Dot(body.velocity, transform.right * -1) * 5.0f;
+            Vector2 relativeForce = Vector2.right * driftForce;
+            body.AddForce(body.GetRelativeVector(relativeForce));
+        }
+
+        body.AddForce(transform.up * acceleration);
+
+        if (body.velocity.magnitude > speedLimit)
+        {
+            body.velocity = body.velocity.normalized * speedLimit;
+        } 
     }
 
     public void driftButtonDown() {
-        angularSpeed = driftAngularSpeed;
-        rotationCenter.transform.localPosition = new Vector2(0, 0);
+        angularSpeed += 30;
+        drifting = true;
     }
 
     public void driftButtonRelease() {
-        angularSpeed = baseAngularSpeed;
-        rotationCenter.GetComponent<CarRotationCenter>().setPosition();
+        angularSpeed -= 30;
+        drifting = false;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (onRoad)
-        {
-            upwardSpeed = -5;
-        }
-
-        onRoad = false;
-
-        //upwardSpeed = 0;
-
-        //float force = 25;
-        //dir = transform.position - collision.transform.position;
-        //dir.Normalize();
-        //dir *= force;
-    }
-
-    public void OnCollisionExit2D(Collision2D collision)
-    {
-        onRoad = true;
+        if ((body.velocity / transform.up).y > 0) { body.velocity = body.velocity.normalized * -6; }
     }
 }
