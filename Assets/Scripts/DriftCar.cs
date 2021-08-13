@@ -5,12 +5,13 @@ using UnityEngine;
 public class DriftCar : MonoBehaviour
 {
     private Rigidbody2D body;
-    public float speedLimit;
-    public float angularSpeed, speedMagnitude, acceleration;
+    public float speedLimit, angularSpeed, speedMagnitude, acceleration;
     public Joystick joystick;
-    private GameObject rotationCenter;
     public bool drifting = false;
-    public float test;
+
+    public bool onRoad = true;
+    private GameObject rotationCenter;
+    private float driftTraction;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,6 @@ public class DriftCar : MonoBehaviour
         rotationCenter = GameObject.Find("RotationCenter");
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         float hDirection = Input.GetAxisRaw("Horizontal");
@@ -31,16 +31,18 @@ public class DriftCar : MonoBehaviour
         if (!drifting) {
             body.rotation += -hDirection * angularSpeed * Time.deltaTime;
             body.rotation += -joystickHDirection * angularSpeed * Time.deltaTime;
+            driftTraction = 1;
         }
         else
         {
             body.rotation += -hDirection * angularSpeed * (body.velocity.magnitude / speedLimit) * Time.deltaTime;
             body.rotation += -joystickHDirection * angularSpeed * (body.velocity.magnitude / speedLimit) * Time.deltaTime;
-
-            float driftForce = Vector2.Dot(body.velocity, transform.right * -1) * 5.0f;
-            Vector2 relativeForce = Vector2.right * driftForce;
-            body.AddForce(body.GetRelativeVector(relativeForce));
+            driftTraction = 5;
         }
+
+        float driftForce = Vector2.Dot(body.velocity, transform.right * -1) * driftTraction;
+        Vector2 relativeForce = Vector2.right * driftForce;
+        body.AddForce(body.GetRelativeVector(relativeForce));
 
         if (body.velocity.magnitude > speedLimit)
         {
@@ -48,7 +50,6 @@ public class DriftCar : MonoBehaviour
         }
 
         body.AddForce(transform.up * acceleration);
-        test = Mathf.Abs(body.rotation % 90);
     }
 
     public void driftButtonDown() {
@@ -63,6 +64,12 @@ public class DriftCar : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        body.velocity = body.velocity.normalized * -5;
+        if (onRoad) { body.velocity = body.velocity.normalized * -5; }
+        onRoad = false;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        onRoad = true;
     }
 }
