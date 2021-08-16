@@ -10,14 +10,12 @@ public class DriftCar : MonoBehaviour
     public bool drifting = false;
 
     public bool onRoad = true;
-    private GameObject rotationCenter;
     private float driftTraction;
 
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
-        rotationCenter = GameObject.Find("RotationCenter");
     }
 
     void FixedUpdate()
@@ -64,12 +62,7 @@ public class DriftCar : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (onRoad) { body.velocity = body.velocity.normalized * -5; }
-        onRoad = false;
+        body.AddForce(body.velocity * -150);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        onRoad = true;
-    }
 }
