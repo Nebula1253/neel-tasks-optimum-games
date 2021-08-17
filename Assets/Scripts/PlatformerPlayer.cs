@@ -6,8 +6,8 @@ public class PlatformerPlayer : MonoBehaviour
 {
     private Rigidbody2D body;
     public Vector2 playerVelocity;
-
     public float horizontalSpeed;
+    public bool jumping = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +24,16 @@ public class PlatformerPlayer : MonoBehaviour
     public void jumpButtonPress()
     {
         body.AddForce(Vector2.up * 500);
+        jumping = true;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        jumping = false;
     }
 
     public void jumpButtonHold()
     {
-        body.AddForce(Vector2.up * 1000);
+        body.AddForce(Vector2.up * 800);
     }
 }

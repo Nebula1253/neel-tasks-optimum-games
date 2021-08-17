@@ -21,7 +21,12 @@ public class DriftCar : MonoBehaviour
     void FixedUpdate()
     {
         float hDirection = Input.GetAxisRaw("Horizontal");
+        float vDirection = 1;
         float joystickHDirection = 0;
+        float joystickVDirection = 1;
+
+        if (Input.GetAxisRaw("Vertical") < 0) { vDirection = -0.5f; }
+        if (joystick.Vertical <= -0.5f) { joystickVDirection = -0.5f; }
 
         if (joystick.Horizontal > 0) { joystickHDirection = 1; }
         else if (joystick.Horizontal < 0) { joystickHDirection = -1; }
@@ -47,7 +52,8 @@ public class DriftCar : MonoBehaviour
             body.velocity = body.velocity.normalized * speedLimit;
         }
 
-        body.AddForce(transform.up * acceleration);
+        body.AddForce(transform.up * acceleration * joystickVDirection * vDirection);
+
     }
 
     public void driftButtonDown() {
@@ -58,11 +64,6 @@ public class DriftCar : MonoBehaviour
     public void driftButtonRelease() {
         angularSpeed -= 30;
         drifting = false;
-    }
-
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        body.AddForce(body.velocity * -150);
     }
 
 }

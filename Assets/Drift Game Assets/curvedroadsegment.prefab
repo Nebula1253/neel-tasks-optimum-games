@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1467733320416541609}
   - component: {fileID: 4018628202340234471}
   - component: {fileID: 3974669835693567221}
+  - component: {fileID: 3141303153643471393}
+  - component: {fileID: 2077085790226015351}
   m_Layer: 0
   m_Name: curvedroadsegment
   m_TagString: Untagged
@@ -155,6 +157,57 @@ EdgeCollider2D:
   - {x: 14.554391, y: -10.854394}
   - {x: 14.814447, y: -10.833282}
   - {x: 15.001278, y: -10.83161}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
+--- !u!68 &3141303153643471393
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182527796338105945}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -10.828898, y: -14.995964}
+  - {x: -8.841757, y: -5.1480384}
+  - {x: -3.8720498, y: 2.592855}
+  - {x: 3.580355, y: 8.004406}
+  - {x: 9.139985, y: 10.128855}
+  - {x: 15.004363, y: 10.829989}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
+--- !u!68 &2077085790226015351
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182527796338105945}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 10.834658, y: -15.004115}
+  - {x: 11.133251, y: -13.42886}
+  - {x: 12.13554, y: -11.972994}
+  - {x: 13.428211, y: -11.1399145}
+  - {x: 14.998372, y: -10.831364}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
