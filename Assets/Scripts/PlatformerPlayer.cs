@@ -6,12 +6,13 @@ public class PlatformerPlayer : MonoBehaviour
 {
     private Rigidbody2D body;
     public Vector2 playerVelocity;
-    public float horizontalSpeed;
-    public bool jumping = false;
+    public float horizontalSpeed, upwardForce;
+    public bool midair = false;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        body.freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -23,17 +24,16 @@ public class PlatformerPlayer : MonoBehaviour
 
     public void jumpButtonPress()
     {
-        body.AddForce(Vector2.up * 500);
-        jumping = true;
+        body.AddForce(Vector2.up * upwardForce * body.gravityScale);
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnCollisionEnter2D(Collision2D collision) 
     {
-        jumping = false;
+        midair = false;
     }
 
-    public void jumpButtonHold()
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        body.AddForce(Vector2.up * 800);
+        midair = true;
     }
 }

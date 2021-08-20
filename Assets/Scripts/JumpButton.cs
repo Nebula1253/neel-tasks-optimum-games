@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 public class JumpButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    public float timeElapsed;
+    private bool buttonDown;
     private PlatformerPlayer player;
-    private bool jump = false;
-    private float timeElapsed;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,15 +17,23 @@ public class JumpButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
-        if (jump) { timeElapsed += Time.deltaTime; }
+        if (buttonDown) { timeElapsed += Time.deltaTime; }
+        if (timeElapsed > 0.2f && buttonDown)
+        {
+            buttonDown = false;
+            player.jumpButtonPress();
+        }
     }
 
-    public void OnPointerDown(PointerEventData eventData) { jump = true; }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        buttonDown = true;
+        if (!player.midair) { player.jumpButtonPress(); }
+    }
 
-    public void OnPointerUp(PointerEventData eventData) { 
-        jump = false;
-        if (timeElapsed > 0.5) { player.jumpButtonHold(); }
-        else { player.jumpButtonPress(); }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        buttonDown = false;
         timeElapsed = 0;
     }
 }
