@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Coin : MonoBehaviour
+public class LivesDisplay : MonoBehaviour
 {
+    private Text text;
     private ControllerPlatformer controller;
+
     // Start is called before the first frame update
     void Start()
     {
+        text = GetComponent<Text>();
         controller = GameObject.Find("GameController").GetComponent<ControllerPlatformer>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    // Update is called once per frame
+    void Update()
     {
-        controller.coinCount++;
-        Destroy(this.gameObject);
+        text.text = "HP: " + controller.playerHP;
     }
 }

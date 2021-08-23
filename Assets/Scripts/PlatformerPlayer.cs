@@ -6,13 +6,16 @@ public class PlatformerPlayer : MonoBehaviour
 {
     private Rigidbody2D body;
     public Vector2 playerVelocity;
-    public float horizontalSpeed, upwardForce;
+    public float horizontalSpeed, upwardForce, enemyBounceForce, highJumpForce;
     public bool midair = false;
+    private ControllerPlatformer controller;
+
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         body.freezeRotation = true;
+        controller = GameObject.Find("GameController").GetComponent<ControllerPlatformer>();
     }
 
     // Update is called once per frame
@@ -22,12 +25,31 @@ public class PlatformerPlayer : MonoBehaviour
         playerVelocity = body.velocity;
     }
 
-    public void jumpButtonPress()
+    public void jump()
     {
         body.AddForce(Vector2.up * upwardForce * body.gravityScale);
     }
 
+    public void highJump()
+    {
+        body.AddForce(Vector2.up * highJumpForce * body.gravityScale);
+    }
+
     public void OnCollisionEnter2D(Collision2D collision) 
+    {
+        if (collision.gameObject.tag == "enemy")
+        {
+            Destroy(collision.gameObject);
+            if (playerVelocity.y < 0)
+            {
+                body.velocity = new Vector2(0, 0);
+                body.AddForce(Vector2.up * enemyBounceForce * body.gravityScale);
+            }
+            else { controller.playerHP--; }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
     {
         midair = false;
     }

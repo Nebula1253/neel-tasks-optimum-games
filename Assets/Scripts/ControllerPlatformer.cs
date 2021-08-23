@@ -5,6 +5,7 @@ using UnityEngine;
 public class ControllerPlatformer : MonoBehaviour
 {
     public int coinCount;
+    public int playerHP;
     // Start is called before the first frame update
     void Start()
     {

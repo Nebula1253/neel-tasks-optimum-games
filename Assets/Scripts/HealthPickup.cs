@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class HealthPickup : MonoBehaviour
 {
     private ControllerPlatformer controller;
     // Start is called before the first frame update
@@ -13,7 +13,7 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        controller.coinCount++;
+        controller.playerHP++;
         Destroy(this.gameObject);
     }
 }
