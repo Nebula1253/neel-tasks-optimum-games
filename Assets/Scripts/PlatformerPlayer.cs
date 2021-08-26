@@ -6,8 +6,9 @@ public class PlatformerPlayer : MonoBehaviour
 {
     private Rigidbody2D body;
     public Vector2 playerVelocity;
-    public float horizontalSpeed, upwardForce, enemyBounceForce, highJumpForce;
+    public float horizontalSpeed, upwardForce, enemyBounceForce, highJumpForce, forwardBurstForce;
     public bool midair = false;
+    public bool forwardBurstActive = false;
     private ControllerPlatformer controller;
 
     // Start is called before the first frame update
@@ -33,6 +34,11 @@ public class PlatformerPlayer : MonoBehaviour
     public void highJump()
     {
         body.AddForce(Vector2.up * highJumpForce * body.gravityScale);
+    }
+
+    public void forwardBurst()
+    {
+        if (forwardBurstActive) { body.AddForce(Vector2.right * forwardBurstForce); }
     }
 
     public void OnCollisionEnter2D(Collision2D collision) 

@@ -29,6 +29,7 @@ public class JumpButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (!player.midair) { buttonDown = true; 
             player.jump(); }
+        else { player.forwardBurst(); }
     }
 
     public void OnPointerUp(PointerEventData eventData)
