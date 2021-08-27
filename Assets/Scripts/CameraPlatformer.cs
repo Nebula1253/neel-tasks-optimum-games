@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraPlatformer : MonoBehaviour
 {
     private GameObject player;
+    private bool followingPlayer = true;
     public float playerDistanceFromScreenEdge;
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,6 @@ public class CameraPlatformer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(player.transform.position.x + playerDistanceFromScreenEdge, 0, -100);
+        if (followingPlayer) { transform.position = new Vector3(player.transform.position.x + playerDistanceFromScreenEdge, 0, -100); }
     }
 }

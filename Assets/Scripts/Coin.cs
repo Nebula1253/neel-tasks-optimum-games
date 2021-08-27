@@ -14,6 +14,6 @@ public class Coin : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         controller.coinCount++;
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 }

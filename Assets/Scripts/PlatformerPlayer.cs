@@ -24,6 +24,9 @@ public class PlatformerPlayer : MonoBehaviour
     {
         transform.Translate(horizontalSpeed * Vector2.right * Time.deltaTime);
         playerVelocity = body.velocity;
+
+        // for design purposes
+        if (Input.GetKeyDown("space")) { Time.timeScale = 0f; }
     }
 
     public void jump()
@@ -52,6 +55,9 @@ public class PlatformerPlayer : MonoBehaviour
                 body.AddForce(Vector2.up * enemyBounceForce * body.gravityScale);
             }
             else { controller.playerHP--; }
+        }
+        if (controller.playerHP == 0) { 
+            controller.playerDeath(); 
         }
     }
 

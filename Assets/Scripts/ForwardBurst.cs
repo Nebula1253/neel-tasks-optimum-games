@@ -14,6 +14,6 @@ public class ForwardBurst : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         player.forwardBurstActive = true;
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 }

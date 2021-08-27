@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPickup : MonoBehaviour
+public class DeathPlane : MonoBehaviour
 {
     private ControllerPlatformer controller;
     // Start is called before the first frame update
@@ -11,9 +11,14 @@ public class HealthPickup : MonoBehaviour
         controller = GameObject.Find("GameController").GetComponent<ControllerPlatformer>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    // Update is called once per frame
+    void Update()
     {
-        controller.playerHP++;
-        this.gameObject.SetActive(false);
+        
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        controller.playerDeath();
     }
 }
